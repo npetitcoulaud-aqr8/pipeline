@@ -19,13 +19,22 @@ jobs:
         with:
           terraform_version: "1.6.6"
 
+      - name: Terraform Format
+        run: terraform fmt -check -diff -recursive
+        continue-on-error: true
+
       - name: Init Terraform
         run: terraform init
 
+      - name: Terraform Validate
+        run: terraform validate
+
       - name: Plan
+        id: plan
         run: |
           terraform plan -out tfplan
 
-      - name: Debug
-        run: |
-          echo ${{ steps.plan.outputs.stdout }}
+      - run: echo ${{ steps.plan.outputs.stdout }}
+      - run: echo ${{ steps.plan.outputs.stderr }}
+      - run: echo ${{ steps.plan.outputs.exitcode }}
+
