@@ -1,0 +1,27 @@
+name: "Terraform Plan"
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
+
+jobs:
+  terraform-plan:
+    name: "Terraform Plan"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: test
+        id: test
+        run: |
+          echo "toto=true" >> $GITHUB_OUTPUT
+
+      - name: debug
+        if: steps.test.outputs.toto == 'true' 
+        run: |
+          echo "ok"
